@@ -1,0 +1,6 @@
+{
+  "name": "branchout-skills",
+  "description": "Skills for the Branchout projected monorepo manager",
+  "version": "1.0.1",
+  "contextFileName": "GEMINI.md"
+}

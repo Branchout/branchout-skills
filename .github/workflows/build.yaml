@@ -1,0 +1,17 @@
+name: Basic Quality and Versioning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    uses: kube-kaptain/buildon-github-actions/.github/workflows/basic-quality-and-versioning.yaml@1.0.85
+    permissions:
+      checks: write
+      packages: write
+      contents: write
+    with:
+      hook-post-versions-and-naming-script-sub-path: bin/verify-version.bash

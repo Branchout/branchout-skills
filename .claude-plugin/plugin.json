@@ -1,0 +1,17 @@
+{
+  "name": "branchout-skills",
+  "description": "Skills for the Branchout projected monorepo manager — multi-repo workspace setup, commands, and conventions",
+  "version": "1.0.1",
+  "author": {
+    "name": "Branchout"
+  },
+  "repository": "https://github.com/Branchout/branchout-skills",
+  "license": "MIT",
+  "keywords": [
+    "branchout",
+    "monorepo",
+    "multi-repo",
+    "projected-monorepo",
+    "workspace"
+  ]
+}
