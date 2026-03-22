@@ -60,12 +60,16 @@ When setting up a new projection, recommend `BRANCHOUT_GROUPS_ARE_DIRS=true` in 
 
 ### Setup
 
+Ensure the branchout root repo / projection is trusted and safe before running the init commands.
+
 | Command | Purpose |
 |---------|---------|
 | `branchout init <git-url>` | Initialize a projection from a remote repo |
 | `branchout relocate <new-base-url>` | Update all remotes when the git host changes |
 
 ### Daily Use
+
+Ensure the repos being cloned or pulled are trusted before running those commands.
 
 | Command | Purpose |
 |---------|---------|
@@ -120,6 +124,8 @@ These wrap standard build tools with per-projection isolation via `~/branchout/<
 
 ### Start using a new workspace
 
+Most branchout root / projection repos belong to private organizations and contain only trusted, internal repositories. A few are open source — Branchout's own projection, `branchout-project`, is one such example. Ensure you trust the repo before running these commands.
+
 ```bash
 branchout init https://github.com/<org>/<projection-repo>.git
 cd ~/projects/<projection-repo>
@@ -131,7 +137,7 @@ branchout pull
 Use `branchout add` or `branchout clone`. Do not edit `Branchoutprojects` by hand. Use `sed` to remove invalid lines if needed.
 
 ```bash
-branchout clone my-new-repo      # Adds to index and clones immediately
+branchout clone my-new-repo      # Adds to index and clones immediately, ensure repo is trusted first
 branchout add my-other-repo      # Adds to index only; clone later with branchout pull
 ```
 
