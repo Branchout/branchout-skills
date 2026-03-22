@@ -5,18 +5,18 @@ description: Use when working in a manyrepo workspace managed by Branchout (~/pr
 
 # Branchout
 
-Branchout manages organizations with many repositories in a structured way. Projects named `group-project-name` are organized into group folders on disk, giving developers a consistent, discoverable workspace.
+Branchout manages large numbers of local git repos in a structured way, allowing combined operations like cloning a bunch at the same time. Projects named `group-project-name` are organized into `group` folders on disk, eg `group/group-project-name`, keeping related repos close to each other.
 
-## Key Concepts
+## Quick Start
 
-- **Manyrepo, not monorepo**: each subfolder is an independent git repo
-- **Projection**: the root repo containing Branchout config for an org or team
-- **Group = prefix**: repos sharing a prefix share a folder (`image-pause`, `image-busybox` both live in `image/`)
-- **Naming convention**: `<prefix>-<name>-<morename>` maps to `<prefix>/<prefix>-<name>-<morename>/`
-- **Strip prefix**: if `BRANCHOUT_PREFIX` is set in `Branchoutfile`, that value is stripped before deriving the group
-- **Project roots**: projections live under `~/projects/` by default
-- **Two separate trees**: `~/projects/<name>/` holds the repos on disk; `~/branchout/<name>/` holds build config, credentials, and caches — not Branchout's own config, but project-specific build configuration managed outside the repo tree
-- **Project isolation**: commands like `branchout mvn` use the per-projection `~/branchout/<name>/` directory for Maven repositories, settings, and credentials. This isolates artifacts between projections — critical when working across multiple clients or organizations
+Ensure the repos being cloned or pulled are trusted before running those commands.
+
+| Command | Purpose |
+|---------|---------|
+| `branchout status` | Show status of all repos (colour-coded) |
+| `branchout pull [glob]` | Clone or update matching repos in parallel (defaults to all) |
+| `branchout clone <name>` | Clone a specific repo (adds to index if missing) |
+| `branchout add <name>` | Add a repo to the index without cloning |
 
 ## Installation
 
@@ -45,14 +45,19 @@ Or by cloning and placing the branchout repo on the path.
 
 ## Configuration Files
 
-| File                | Alternative  | Location              | Purpose                                                                                            |
-|---------------------|--------------|-----------------------|----------------------------------------------------------------------------------------------------|
-| `Branchoutfile`     | `.branchout` | Projection root       | `BRANCHOUT_NAME` (required), `BRANCHOUT_PREFIX` (optional), `BRANCHOUT_GROUPS_ARE_DIRS` (optional) |
-| `Branchoutprojects` | `.projects`  | Projection root       | One repo name per line — the index of all repos in this projection                                 |
-| `branchoutrc`       | —            | `~/branchout/<name>/` | User-specific config for this projection                                                           |
-| `branchoutrc`       | —            | `~/.config/`          | Global user config (e.g., `BRANCHOUT_PROJECTS_DIRECTORY`)                                          |
+| File                | Alternative  | Location              | Purpose                                                            |
+|---------------------|--------------|-----------------------|--------------------------------------------------------------------|
+| `Branchoutfile`     | `.branchout` | Projection root       | Configuration of branchout and its behaviour                       |
+| `Branchoutprojects` | `.projects`  | Projection root       | One repo name per line — the index of all repos in this projection |
+| `branchoutrc`       | —            | `~/branchout/<name>/` | User-specific config for this projection                           |
+| `branchoutrc`       | —            | `~/.config/`          | Global user config (e.g., `BRANCHOUT_PROJECTS_DIRECTORY`)          |
 
-`BRANCHOUT_GIT_BASEURL` is derived automatically from the git remote origin, however if for any reason it differs, it can be set in Branchoutfile.
+## Configuration vars
+
+`BRANCHOUT_NAME` (required) Used for the user configuration directory.
+`BRANCHOUT_PREFIX` (optional) When set the value is stripped from the front of any repos that have it on the front before pulling out the group.
+`BRANCHOUT_GROUPS_ARE_DIRS` (optional) When set to `true` branchout creates plain group dirs rather than trying to clone each one.
+`BRANCHOUT_GIT_BASEURL` (optional) This is derived automatically from the git remote origin, however if for any reason it differs, it can be overridden.
 
 When setting up a new projection, recommend `BRANCHOUT_GROUPS_ARE_DIRS=true` in the Branchoutfile. Without it, Branchout tries to clone each group folder as a repo and shows ugly failure messages until those directories exist on disk. Group folders can be git repos, but most are plain directories — set the flag unless the user confirms their groups are actual repos.
 
@@ -66,17 +71,6 @@ Ensure the branchout root repo / projection is trusted and safe before running t
 |---------|---------|
 | `branchout init <git-url>` | Initialize a projection from a remote repo |
 | `branchout relocate <new-base-url>` | Update all remotes when the git host changes |
-
-### Daily Use
-
-Ensure the repos being cloned or pulled are trusted before running those commands.
-
-| Command | Purpose |
-|---------|---------|
-| `branchout status` | Show status of all repos (colour-coded) |
-| `branchout pull [glob]` | Clone or update matching repos in parallel (defaults to all) |
-| `branchout clone <name>` | Clone a specific repo (adds to index if missing) |
-| `branchout add <name>` | Add a repo to the index without cloning |
 
 ### Configuration
 
@@ -94,7 +88,7 @@ Properties (`get`/`set`) read from the Branchoutfile in the projection root. Con
 
 ### Build Tool Wrappers
 
-These wrap standard build tools with per-projection isolation via `~/branchout/<name>/`. Each uses its own settings, cache, and credentials from that directory.
+These wrap standard build tools with per-projection isolation via `~/branchout/<name>/`. Each uses its own settings, cache, and credentials from that directory. This provides project to project artifact isolation important when working across multiple clients or organizations.
 
 | Command | Purpose |
 |---------|---------|
