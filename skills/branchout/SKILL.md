@@ -135,3 +135,4 @@ For corporate environments with custom certificates, place them in `.branchout/c
 - The root `.gitignore` typically ignores `*/*/`. This is intentional but confuses some editors and CLI tools that expect a single repo.
 - Always `cd` into a repo subfolder before git operations. Running `git status` at the projection root shows only the projection repo itself.
 - `branchout pull` clones repos that are not yet on disk and updates those that are. It is safe to run repeatedly.
+- `branchout` has no `--version` flag. To confirm it is available, use `which branchout` or run `branchout status` inside a branchout project root.
