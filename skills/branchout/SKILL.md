@@ -1,6 +1,6 @@
 ---
 name: branchout
-description: Use when working in a manyrepo workspace managed by Branchout (~/projects/*/), navigating between repos, cloning or adding repos, running builds in repos, or when someone asks what Branchout is. Detect by Branchoutfile or .branchout in current or parent directories.
+description: Use when working in a manyrepo workspace managed by Branchout (~/projects/*/), finding repos the user mentions by name (even if not exactly) within the naming-convention-based folder structure, cloning updating or adding repos, running isolated builds via wrappers like branchout mvn or branchout yarn, or when someone mentions Branchout or asks what Branchout is. Detect by Branchoutfile or .branchout in current or parent directories.
 ---
 
 # Branchout
