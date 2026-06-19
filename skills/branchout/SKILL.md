@@ -22,6 +22,7 @@ Ensure the repos being cloned or pulled are trusted before running those command
 
 ```bash
 brew tap Branchout/homebrew-branchout
+brew trust Branchout/homebrew-branchout
 brew install branchout
 ```
 
